@@ -13,13 +13,14 @@ class Example(QtGui.QWidget):
         """Constructor"""
         super(Example, self).__init__()
 
-        self.initUI()
+        self.initUI_basic()
 
 
     #----------------------------------------------------------------------
-    def initUI(self):
+    def initUI_basic(self):
         """"""
-
+        
+        self.point = 0
         self.flag = 0
         self.flag_equ = 0
         self.flag_add = 0 #加
@@ -32,6 +33,25 @@ class Example(QtGui.QWidget):
         self.num_2 = ''
         self.num_3 = ''
         
+        
+        #-------------------------------------------------------------------------
+        exitAction = QtGui.QAction(QtGui.QIcon('exit.png'), '&Exit', self)        
+        exitAction.setShortcut('Ctrl+Q')
+        #exitAction.setStatusTip('Exit application')
+        exitAction.triggered.connect(QtGui.qApp.quit)
+        
+        aboutAction = QtGui.QAction(QtGui.QIcon(''), '&About', self)
+        aboutAction.triggered.connect(self.OnAboutButton)
+        
+        menubar = QtGui.QMenuBar()
+        
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(exitAction)
+        
+        aboutMenu = menubar.addMenu('&About')
+        aboutMenu.addAction(aboutAction)
+        
+        #----------------------------------------------------------------------
         global lcd
         lcd = QtGui.QTextBrowser()
         lcd.setFixedHeight(190)
@@ -45,8 +65,11 @@ class Example(QtGui.QWidget):
         #self.setMaximumSize(300, 300)
         #self.setGeometry( 200, 100, 200, 200 )
         grid.setSpacing(0)
-        grid.addWidget(lcd, 0, 0, 1, 4)
-
+        grid.addWidget(menubar, self.point, 0, 1, 4)
+        grid.addWidget(lcd, self.point+1, 0, 1, 4)
+        
+        
+        #----------------------------------------------------------------------
         button_1 = QtGui.QPushButton('1')
         button_2 = QtGui.QPushButton('2')
         button_3 = QtGui.QPushButton('3')
@@ -102,23 +125,23 @@ class Example(QtGui.QWidget):
         button_cls.setFont(QtGui.QFont("Microsoft YaHei", 16))
         
 
-        grid.addWidget(button_7, 1,0)
-        grid.addWidget(button_8, 1,1)
-        grid.addWidget(button_9, 1,2)
-        grid.addWidget(button_div, 1,3)
-        grid.addWidget(button_4, 2,0)
-        grid.addWidget(button_5, 2,1)
-        grid.addWidget(button_6, 2,2)
-        grid.addWidget(button_mul, 2,3)
-        grid.addWidget(button_1, 3,0)
-        grid.addWidget(button_2, 3,1)
-        grid.addWidget(button_3, 3,2)
-        grid.addWidget(button_sub, 3,3)
-        grid.addWidget(button_0, 4,0)
-        grid.addWidget(button_dot, 4,1)
-        grid.addWidget(button_cls, 4,2)
-        grid.addWidget(button_add, 4,3)
-        grid.addWidget(button_equ, 5, 0, 1, 4)
+        grid.addWidget(button_7, self.point+2,0)
+        grid.addWidget(button_8, self.point+2,1)
+        grid.addWidget(button_9, self.point+2,2)
+        grid.addWidget(button_div, self.point+2,3)
+        grid.addWidget(button_4, self.point+3,0)
+        grid.addWidget(button_5, self.point+3,1)
+        grid.addWidget(button_6, self.point+3,2)
+        grid.addWidget(button_mul, self.point+3,3)
+        grid.addWidget(button_1, self.point+4,0)
+        grid.addWidget(button_2, self.point+4,1)
+        grid.addWidget(button_3, self.point+4,2)
+        grid.addWidget(button_sub, self.point+4,3)
+        grid.addWidget(button_0, self.point+5,0)
+        grid.addWidget(button_dot, self.point+5,1)
+        grid.addWidget(button_cls, self.point+5,2)
+        grid.addWidget(button_add, self.point+5,3)
+        grid.addWidget(button_equ, self.point+6, 0, 1, 4)
 
         self.move(300, 400)
         self.setWindowTitle('Calculator')
@@ -146,7 +169,13 @@ class Example(QtGui.QWidget):
 
         self.connect(button_equ,QtCore.SIGNAL('clicked()'),self.func_button_equ)
 
-
+        #self.statusBar().showMessage('Ready')
+        
+    #----------------------------------------------------------------------
+    def OnAboutButton( self ):
+        QtGui.QMessageBox.about( self, 'About', "A Calculator!" )
+    
+         
     #----------------------------------------------------------------------
     def keyPressEvent(self, event):
         """"""
