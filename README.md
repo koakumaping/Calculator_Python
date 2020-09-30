@@ -1,4 +1,4 @@
-Calculator_Python
+Python_calculator
 =================
 
 A calculator based on python.
